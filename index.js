@@ -1,90 +1,75 @@
-// Weather app
-const weatherForm = document.querySelector(".weatherForm");
-const cityInput = document.querySelector(".cityInput");
-const card = document.querySelector(".card");
-const apiKey = "730a4fefc5c6dea74bad57fd7e4f82f3";
-weatherForm.addEventListener("submit", async event => {
-    event.preventDefault();
-    const city = cityInput.value;
-    if(city){
-        try {
-            const weatherData = await getWeatherData(city);
-            displayWeatherInfo(weatherData);
-        } catch (error) {
-            console.error.log(error);
-            displayError(error);
-            
-        }
+const apiKey = "8fa799d9ed64f37163d9d60cfa8dbdda";
+const baseUrl = "https://api.themoviedb.org/3";
+const language = "en-US";
+const searchButton = document.getElementById("search-button");
+const genreFilter = document.getElementById("genre-filter");
+const sortBySelect = document.getElementById("sort-by");
+const movieList = document.getElementById("movie-list");
 
-    }else{
-        displayError("Please enter a vali city name");
-    }
+searchButton.addEventListener("click", () => {
+  const searchTerm = document.getElementById("search").value;
+  const selectedGenre = genreFilter.value;
+
+  const url = `${baseUrl}/search/movie?api_key=${apiKey}&query=${searchTerm}&with_genres=${selectedGenre}&language=${language}`;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      movieList.innerHTML = "";
+
+      data.results.forEach(movie => {
+        const movieCard = document.createElement("div");
+        movieCard.className = "movie-card";
+
+        const movieImage = document.createElement("img");
+        movieImage.src = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
+        movieImage.alt = movie.title;
+
+        // Add the click event to the image
+        movieImage.addEventListener("click", () => {
+          const movieId = movie.id; // Save the clicked movie ID
+          openModal(movieId);
+        });
+
+        movieCard.appendChild(movieImage);
+        movieList.appendChild(movieCard);
+      });
+    })
+    .catch(error => {
+      console.error("Error al buscar películas:", error);
+    });
 });
 
-async function getWeatherData(city) {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
-    const response = await fetch(apiUrl);
-    if(!response.ok){
-        throw new Error("could not fetch weather data");
-    } else{
-        return await response.json();
-    }
-   
+function openModal(movieId) {
+  const modal = document.getElementById("movie-modal");
+  const modalContent = document.getElementById("modal-content");
+
+  // Make a request to the API to get details of the movie with movieId
+  const url = `${baseUrl}/movie/${movieId}?api_key=${apiKey}&language=${language}`;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(movieData => {
+      // Show the movie details in the modal view
+      modalContent.innerHTML = `
+        <h2>${movieData.title}</h2>
+        <p>${movieData.overview}</p>
+        <p>Rating: ${movieData.vote_average}</p>
+        <p>Realease Date: ${movieData.release_date}</p>
+        <button id="close-button-modal">&times;</button>
+      `;
+
+      modal.style.display = "block";
+
+      // Add click event to the modal view's close button
+      const closeButtonModal = document.getElementById("close-button-modal");
+      closeButtonModal.addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+    })
+    .catch(error => {
+      console.error("Error al obtener detalles de la película:", error);
+    });
 }
 
-function displayWeatherInfo(data){
-    console.log(data);
-    const {name: city, 
-           main:{temp, humidity}, 
-           weather: [{description, id}]}= data;
-           card.textContent="";
-           card.style.display="flex";
-           const cityDisplay = document.createElement("h1");
-           const tempDisplay = document.createElement("p");
-           const humidityDisplay = document.createElement("p");
-           const descDisplay = document.createElement("p");
-           const  weahterEmoji = document.createElement("p");
-           
-           cityDisplay.textContent=city;
-           tempDisplay.textContent= `${((temp - 273.15)* 9/5 + 32).toFixed(0)}F`;
-           humidityDisplay.textContent = `Humidity: ${humidity}%`;
-           descDisplay.textContent = description;
-           weahterEmoji.textContent = getWeatherEmoji(id);
-
-
-           cityDisplay.classList.add("cityDisplay");
-           tempDisplay.classList.add("tempDisplay");
-           humidityDisplay.classList.add("humidityDisplay");
-           descDisplay.classList.add("descDisplay");
-           weahterEmoji.classList.add("weatherEmoji");
-
-           card.appendChild(cityDisplay);
-           card.appendChild(tempDisplay);
-           card.appendChild(humidityDisplay);
-           card.appendChild(descDisplay);
-           card.appendChild(weahterEmoji);
-}
-
-function getWeatherEmoji(weatherId){
-    switch(true){
-        case(weatherId >=200 && weatherId < 300): return "⛈️";
-        case(weatherId >=300 && weatherId < 400): return "☔";
-        case(weatherId >=500 && weatherId < 600): return "🌨️";
-        case(weatherId >=600 && weatherId < 700): return "❄️";
-        case(weatherId >=700 && weatherId < 800): return "🌁";
-        case(weatherId == 800): return "☀️";
-        case(weatherId >=801 && weatherId < 810): return "☁️";
-        default: return "❓";
-    }
-    
-}
-
-function displayError(message){
-    const errorDisplay = document.createElement("p");
-    errorDisplay.textContent = message;
-    errorDisplay.classList.add("errorDisplay");
-    card.textContent="";
-    card.style.display="flex";
-    card.appendChild(errorDisplay);
-
-}
+// Other event and code listeners...
