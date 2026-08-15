@@ -36,7 +36,7 @@ searchButton.addEventListener("click", () => {
       });
     })
     .catch(error => {
-      console.error("Error al buscar películas:", error);
+      console.error("Error searching for movies:", error);
     });
 });
 
@@ -68,8 +68,25 @@ function openModal(movieId) {
       });
     })
     .catch(error => {
-      console.error("Error al obtener detalles de la película:", error);
+      console.error("Error getting movie details:", error);
     });
 }
 
 // Other event and code listeners...
+
+
+// bruger menu
+
+ const hamburger = document.querySelector(".hamburger");
+ const navMenu = document.querySelector(".nav-menu");
+
+ hamburger.addEventListener("click", ()=> {
+    hamburger.classList.toggle("active");
+    navMenu.classList.toggle("active");
+
+ })
+
+ document.querySelectorAll(".nav-link").forEach(n =>n.addEventListener("click", ()=> {
+    hamburger.classList.remove("active");
+    navMenu.classList.remove("active");
+ }))
