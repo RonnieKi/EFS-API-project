@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <style>@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');</style>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
-  <link rel="shortcut icon" href="./movie.png" type="image/x-icon">    
-  <title>MovieFlix</title>
-</head>
-<body>
-  <header>
-    <div class="navbar">
-        <div class="navbar-container">
-    <h1 class="logo">MovieFlix</h1>
-    <div class="menu-container">
-        <ul class="nav-menu">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="api2.css" />
+		<!--<link rel="icon" href="images/filmico.png" /> -->
+		<title>MovieFlix</title>
+	</head>
+	<body>
+		<header>
+	<div class="navbar">
+     <div class="navbar-container">
+            <h1 class="logo">MovieFlix</h1>
+          <div class="menu-container">
+          <ul class="nav-menu">
             <li class="nav-time"> <a href="#" class="nav-link">Home</a></li>
             <li class="nav-time"> <a href="#" class="nav-link">Movies</a></li>
             <li class="nav-time"> <a href="#" class="nav-link">Series</a></li>
@@ -26,50 +23,42 @@
          
         </ul>
         <!-- burger nav-->
-         <div class="hamburger">
+          <div class="hamburger">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
-        </div>
-
-    </div>
-    </div>
-    </div>
-    <div class="search-bar">
-      <input type="text" id="search" placeholder="Search movies"> 
-      
-    </div>
-    <button id="search-button">Search</button>
-    <div class="filter-sort">
-      <select id="genre-filter">
-        <option value="">All Genres</option>
-        <option value="28">Action</option>
-        <option value="35">Comedy</option>
-        <option value="18">Drama</option>
-      </select>
-      <select id="sort-by">
-        <option value="popularity.desc">Popularity (descendent)</option>
-        <option value="vote_average.desc">Rating (descendent)</option>
-        <option value="release_date.desc">Release Date (descendent)</option>
-      </select>
-    </div>
-    
-  </header>
-  <main>
-    <div class="movie-list" id="movie-list"></div>
-
-    <div class="modal" id="movie-modal">
-      <div class="modal-content">
-        <div id="modal-content"></div>
+           </div>
+          </div>
       </div>
-    </div>
-  </main>
+    </div>   
+		</header>
 
-  <footer>
+        <form id="form">
+				<input type="text"	placeholder="Search for movie" id="search" class="search"/>
+		</form>
+
+		<div id="tags"></div>
+		<div id="myNav" class="overlay">
+			<!-- Button to close the overlay navigation -->
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>Overlay content 
+			<div class="overlay-content" id="overlay-content"></div>
+			<a href="javascript:void(0)" class="arrow left-arrow" id="left-arrow">&#8656;</a>
+			<a href="javascript:void(0)" class="arrow right-arrow" id="right-arrow">&#8658;</a>            
+		</div>       
+		<main id="main"></main>
+		<div class="pagination">
+			<div class="page" id="prev">&#8656; Prev</div>
+			<div class="current" id="current">1</div>
+			<div class="page" id="next">Next &#8658;</div>
+		</div>        
+		<span class="loader"></span>		
+    <footer>
         <hr>
         &copy; 2026 copyright reserved <br>
         <small>rkina@umich.edu</small>
-  </footer>
-  <script src="index.js"></script>
-</body>
+    </footer>
+
+		<script src="api2.js"></script>
+		<script	src="https://kit.fontawesome.com/f7a442f79b.js"	crossorigin="anonymous"></script>
+	</body>
 </html>
